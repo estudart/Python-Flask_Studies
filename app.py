@@ -40,15 +40,27 @@ def url_variables(name: str, age: int):
 
 @app.route('/planets', methods=["GET"])
 def planets():
-    planets_list = Planet.query.all()
+    session = Session()
+    planets_list = session.query(Planet).all()
     result = planets_schema.dump(planets_list)
     return jsonify(result), 200
 
-# marshmallow schemas
+@app.route('/planet', methods=['POST'])
+def post_planet():
+    try:
+        json_data = request.get_json()
+        print("Received JSON data:", json_data)
+        
+        new_planet_data = planet_schema.load(json_data)
+        new_planet = Planet(**new_planet_data)
 
+        print("New Planet instance:", new_planet)
 
-    
+        session = Session()
+        session.add(new_planet)
+        session.commit()
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        return jsonify(new_planet_data), 201  # 201 Created status code
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify(message='Failed to create a Planet'), 404
