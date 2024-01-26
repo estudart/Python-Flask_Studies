@@ -1,8 +1,9 @@
 from flask import Flask, jsonify, request
+from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float
 import os
-from flask_marshmallow import Marshmallow
+
 
 
 app = Flask(__name__)
@@ -52,7 +53,7 @@ def db_seed():
     test_user = User(first_name='Érico', 
                      last_name='Studart',
                      email='erico@gmail.com',
-                     password='P@ssword')
+                     password='P@ssw0rd')
     
     db.session.add(test_user)
     db.session.commit()
