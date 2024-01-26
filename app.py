@@ -48,7 +48,7 @@ def planets():
 @app.route('/planet', methods=['POST'])
 def post_planet():
     try:
-        json_data = request.get_json()
+        json_data = request.form
         print("Received JSON data:", json_data)
         
         new_planet_data = planet_schema.load(json_data)
