@@ -13,31 +13,6 @@ app = Flask(__name__)
 def hello_world():
     return "Hello world"
 
-@app.route("/super_simple")
-def super_simple():
-    return jsonify(message=f'Hello from the planetary API.'), 200
-
-@app.route("/not_found")
-def not_found():
-    return jsonify(message='That resource was not found'), 404
-
-@app.route('/parameters')
-def parameters():
-    name = request.args.get('name')
-    age = request.args.get('age')
-    if int(age) < 18:
-        return jsonify(message=f'Sorry, {name}, you are not old enough !'), 401
-    else:
-        return jsonify(message=f'Welcome {name}, you are old enough !'), 200
-    
-@app.route('/url_variables/<string:name>/<int:age>')
-def url_variables(name: str, age: int):
-    if int(age) < 18:
-        return jsonify(message=f'Sorry, {name}, you are not old enough !'), 401
-    else:
-        return jsonify(message=f'Welcome {name}, you are old enough !'), 200
-    
-
 @app.route('/planets', methods=["GET"])
 def planets():
     session = Session()
@@ -81,6 +56,27 @@ def delete_planet(id):
     except:
         error_msg = f'Planet not found'
         return {"message": error_msg}, 422
+
+@app.route('/planet/<int:id>', methods=['PUT'])
+def edit_planet(id):
+    try:
+        session = Session()
+        planet = session.query(Planet).filter(Planet.planet_id == id).first()
+
+        if not planet:
+            error_msg = f'Planet does not exist in database'
+            return {"message": error_msg}, 200
+        else:
+            for field, value in request.form.items():
+                setattr(planet, field, value)
+        
+        session.commit()
+
+        error_msg = f'Planet with id: {id} updated with new values'
+        return {"message": error_msg}, 200
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify(message='Failed to create a Planet'), 404
 
            
 
