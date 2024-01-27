@@ -64,3 +64,23 @@ def post_planet():
     except Exception as e:
         print("Error:", str(e))
         return jsonify(message='Failed to create a Planet'), 404
+
+@app.route('/planet/<int:id>', methods=['DELETE'])
+def delete_planet(id):
+    try:
+        session = Session()
+        delete_planet = session.query(Planet).filter(Planet.planet_id == id).first()
+        if not delete_planet:
+            error_msg = f'Planet not found in the database'
+            return {"message": error_msg}, 200
+        else:
+            delete = session.query(Planet).filter(Planet.planet_id == id).delete()
+            session.commit()
+            msg = f'Planet with id: {id}, was deleted'
+            return {"message": msg}, 200
+    except:
+        error_msg = f'Planet not found'
+        return {"message": error_msg}, 422
+
+           
+
