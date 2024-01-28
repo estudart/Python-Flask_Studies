@@ -91,7 +91,8 @@ class PlanetsResource(Resource):
         """
         try:
             json_data = request.form
-            new_planet_data = planet_schema.load(json_data)
+            new_planet_data = planet_schema.dump(json_data)
+            print(new_planet_data)
             new_planet = Planet(**new_planet_data)
 
             session = Session()
@@ -194,9 +195,57 @@ class PlanetResource(Resource):
         except Exception as e:
             return jsonify(message='Failed to create a Planet'), 404
 
+
+
+class UserResource(Resource):
+    def post(self):
+        """
+        Create a new user
+
+        ---
+        parameters:
+          - name: first_name
+            in: formData
+            type: string
+            required: true
+            description: The first name of the user.
+          - name: last_name
+            in: formData
+            type: string
+            required: true
+            description: The last name of user.
+          - name: email
+            in: formData
+            type: string
+            required: true
+            description: The user's email.
+          - name: password
+            in: formData
+            type: string
+            required: true
+            description: The user's password.
+        responses:
+          201:
+            description: Created.
+        """
+        try:
+            json_data = request.form
+            new_user_data = user_schema.dump(json_data)
+            print(new_user_data)
+            new_user = User(**new_user_data)
+
+            session = Session()
+            session.add(new_user)
+            session.commit()
+
+            return new_user_data, 201
+        except Exception as e:
+            return jsonify(message='Missing argument'), 404
+
 api.add_resource(HomeResource, '/')
 api.add_resource(PlanetsResource, '/planets')
 api.add_resource(PlanetResource, '/planet/<int:id>')
+api.add_resource(UserResource, '/user')
 
 if __name__ == '__main__':
     app.run(debug=True)
