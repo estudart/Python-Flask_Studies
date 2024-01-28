@@ -80,7 +80,7 @@ class PlanetsResource(Resource):
             session.add(new_planet)
             session.commit()
 
-            return jsonify(new_planet_data), 201
+            return new_planet_data, 201
         except Exception as e:
             return jsonify(message='Failed to create a Planet'), 404
 
