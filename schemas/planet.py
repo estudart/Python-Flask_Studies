@@ -1,9 +1,13 @@
-from marshmallow import Schema
+from marshmallow import Schema, fields
 
 class PlanetSchema(Schema):
-    class Meta:
-        fields = ('planet_id', 'planet_name', 'planet_type', 'home_star', 'mass', 'radius', 'distance')
-
+    planet_id = fields.Int()
+    planet_name = fields.Str()
+    planet_type = fields.Str()
+    home_star = fields.Str()
+    mass = fields.Float()
+    radius = fields.Float()
+    distance = fields.Float()
 
 planet_schema = PlanetSchema()
 planets_schema = PlanetSchema(many=True)
