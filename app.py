@@ -33,6 +33,8 @@ class HomeResource(Resource):
         Welcome to the home page!
 
         ---
+        tags:
+          - Welcome
         responses:
           200:
             description: A welcome message.
@@ -45,6 +47,8 @@ class PlanetsResource(Resource):
         Get a list of planets.
 
         ---
+        tags:
+          - Planets
         responses:
           200:
             description: List of planets.
@@ -59,6 +63,8 @@ class PlanetsResource(Resource):
         Create a new planet.
 
         ---
+        tags:
+          - Planets
         parameters:
           - name: planet_name
             in: formData
@@ -109,6 +115,8 @@ class PlanetResource(Resource):
         Delete a planet by ID.
 
         ---
+        tags:
+          - Planet
         parameters:
           - name: id
             in: path
@@ -141,6 +149,8 @@ class PlanetResource(Resource):
         Update a planet by ID.
 
         ---
+        tags:
+          - Planet
         parameters:
           - name: id
             in: path
@@ -198,11 +208,114 @@ class PlanetResource(Resource):
 
 
 class UserResource(Resource):
+    def get(self, id):
+        """
+        Get a single user info
+
+        ---
+        tags:
+          - User
+        parameters:
+          - name: id
+            in: path
+            type: integer
+            required: True
+            description: id of the User.
+
+        responses:
+          200:
+            description: Success.
+        """
+        try:
+            session = Session()
+            user = session.query(User).filter(User.id == id).first()
+            user_data = user_schema.dump(user)
+            return user_data, 200
+        except Exception as e:
+            return jsonify(message=e), 404
+
+    def put(self, id):
+        """
+        Edit information about users registered.
+
+        ---
+        tags:
+          - User
+        parameters:
+          - name: id
+            in: path
+            type: integer
+            required: true
+            description: User's id.
+          - name: first_name
+            in: formData
+            type: string
+            required: false
+            description: The first name of the user.
+          - name: last_name
+            in: formData
+            type: string
+            required: false
+            description: The last name of user.
+          - name: email
+            in: formData
+            type: string
+            required: false
+            description: The user's email.
+          - name: password
+            in: formData
+            type: string
+            required: false
+            description: The user's password.
+        responses:
+          200:
+            description: User information updated.
+          404:
+            description: User not found.
+        """
+
+        try:
+            session = Session()
+            found_user = session.query(User).filter(User.id == id).first()
+
+            for field, value in request.form.items():
+                setattr(found_user, field, value)
+            
+            session.commit()
+
+            return user_schema.dump(found_user), 200
+            # return {"message": f'User with id: {id}, was updated'}, 200
+        
+        except Exception as error:
+            return jsonify(message=error), 404
+
+class UsersResource(Resource):
+    def get(self):
+        """
+        Get all users in the base.
+
+        ---
+        tags:
+          - Users
+        responses:
+          200:
+            description: List of users.
+        """
+        try:
+            session = Session()
+            users_list = session.query(User).all()
+            result = users_schema.dump(users_list)
+            return result, 200
+        except Exception as e:
+            return jsonify(message=e)
+    
     def post(self):
         """
         Create a new user
 
         ---
+        tags:
+          - Users
         parameters:
           - name: first_name
             in: formData
@@ -230,22 +343,22 @@ class UserResource(Resource):
         """
         try:
             json_data = request.form
-            new_user_data = user_schema.dump(json_data)
-            print(new_user_data)
-            new_user = User(**new_user_data)
+            new_user = User(**json_data)
 
             session = Session()
             session.add(new_user)
             session.commit()
 
-            return new_user_data, 201
+            return json_data, 201
         except Exception as e:
             return jsonify(message='Missing argument'), 404
+    
 
 api.add_resource(HomeResource, '/')
 api.add_resource(PlanetsResource, '/planets')
 api.add_resource(PlanetResource, '/planet/<int:id>')
-api.add_resource(UserResource, '/user')
+api.add_resource(UserResource, '/user/<int:id>')
+api.add_resource(UsersResource, '/users')
 
 if __name__ == '__main__':
     app.run(debug=True)
