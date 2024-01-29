@@ -289,6 +289,39 @@ class UserResource(Resource):
         except Exception as error:
             return jsonify(message=error), 404
 
+
+    def delete(self, id):
+        """
+        Delete a user on this route
+
+        ---
+        tags: 
+          - User
+        parameters:
+          - name: id
+            in: path
+            type: integer
+            required: true
+            descripton: User's id.
+        responses:
+          200:
+            description: User has been deleted.
+          404:
+            description: User not found.
+        """
+        try:
+            session = Session()
+            user_data = session.query(User).filter(User.id == id).first()
+
+            if not user_data:
+                return {"message": "User not found"}, 404
+            else:
+                delete_user = session.query(User).filter(User.id == id).delete()
+                session.commit()
+                return {"deleted": user_schema.dump(user_data)}, 200
+        except Exception as error:
+            return {"message": error}, 404
+
 class UsersResource(Resource):
     def get(self):
         """
