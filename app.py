@@ -110,6 +110,39 @@ class PlanetsResource(Resource):
             return jsonify(message='Failed to create a Planet'), 404
 
 class PlanetResource(Resource):
+    def get(self, id):
+        """
+        Get a single planet information.
+
+        ---
+        tags:
+          - Planet
+        parameters:
+          - name: id
+            in: path
+            type: string
+            required: true
+            description: The planet's id
+        responses:
+          200:
+            description: Planet found.
+          404:
+            description: Planet not found.
+        """
+
+        try:
+            session = Session()
+            planet_data = session.query(Planet).filter(Planet.planet_id == id).first()
+
+            if not planet_data:
+                return {"message": "Planet not found."}, 404
+            else:
+                planet_json = planet_schema.dump(planet_data)
+                return planet_json, 200
+        except Exception as err:
+            error_msg = f'{err}'
+            return {"message": error_msg}, 404
+
     def delete(self, id):
         """
         Delete a planet by ID.
@@ -140,8 +173,8 @@ class PlanetResource(Resource):
                 session.commit()
                 msg = f'Planet with id: {id}, was deleted'
                 return {"message": msg}, 200
-        except:
-            error_msg = f'Planet not found'
+        except Exception as err:
+            error_msg = f'{err}'
             return {"message": error_msg}, 422
 
     def put(self, id):
@@ -203,7 +236,7 @@ class PlanetResource(Resource):
             error_msg = f'Planet with id: {id} updated with new values'
             return {"message": error_msg}, 200
         except Exception as e:
-            return jsonify(message='Failed to create a Planet'), 404
+            return {"message":'Failed to create a Planet'}, 404
 
 
 
