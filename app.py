@@ -91,6 +91,10 @@ class PlanetsResource(Resource):
             in: formData
             type: float
             description: The distance from home star of the planet.
+          - name: image
+            in: formData
+            type: string
+            decription: Url string for the planet image
         responses:
           201:
             description: Created.
@@ -214,6 +218,10 @@ class PlanetResource(Resource):
             in: formData
             type: float
             description: The distance from home star of the planet.
+          - name: image
+            in: formData
+            type: string
+            decription: Url string for the planet image
         responses:
           200:
             description: Planet updated.
@@ -233,10 +241,10 @@ class PlanetResource(Resource):
 
             session.commit()
 
-            error_msg = f'Planet with id: {id} updated with new values'
-            return {"message": error_msg}, 200
+            msg = f'Planet with id: {id} updated with new values'
+            return {"message": msg}, 200
         except Exception as e:
-            return {"message":'Failed to create a Planet'}, 404
+            return {"message":'Failed to update a Planet'}, 404
 
 
 
