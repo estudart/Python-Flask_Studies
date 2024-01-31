@@ -2,10 +2,12 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api, Resource
 from flasgger import Swagger
+from flask_cors import CORS
 from model import *
 from schemas import *
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
 swagger_config = {
