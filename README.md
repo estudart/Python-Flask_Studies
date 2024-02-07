@@ -19,7 +19,7 @@ This repository contains a Flask project for building a RESTful API to manage in
 ## Usage
 
 1. Run the Flask application:
- ```python app.py
+   python app.py
 2. Access the API documentation at http://127.0.0.1:5000/apidocs/ to explore available endpoints and interact with the API.
 
 
