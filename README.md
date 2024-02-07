@@ -25,7 +25,7 @@ This repository contains a Flask project for building a RESTful API to manage in
 
 ## Endpoints
 
-[![API_BackEnd](https://github.com/estudart/Python-Flask_Studies/blob/main/Doc.PNG)]
+![API_BackEnd](https://github.com/estudart/Python-Flask_Studies/blob/main/Doc.PNG)
 
 - `/planets`:
   - `GET`: Retrieve a list of planets.
