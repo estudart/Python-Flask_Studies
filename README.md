@@ -14,11 +14,14 @@ This repository contains a Flask project for building a RESTful API to manage in
 1. Clone the repository:
    ```bash
    git clone https://github.com/estudart/Python-Flask_Studies.git
-2. pip install -r requirements.txt
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
 
 ## Usage
 
 1. Run the Flask application:
+   ```bash
    python app.py
 2. Access the API documentation at http://127.0.0.1:5000/apidocs/ to explore available endpoints and interact with the API.
 
