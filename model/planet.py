@@ -12,3 +12,4 @@ class Planet(Base):
     radius = Column(Float)
     distance = Column(Float)
     image = Column(String)
+    description = Column(String)

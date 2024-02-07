@@ -428,8 +428,107 @@ class UsersResource(Resource):
             return json_data, 201
         except Exception as e:
             return jsonify(message='Missing argument'), 404
-    
 
+
+class CreatePlanets(Resource):
+    def get(self):
+        neptune = {
+            "planet_name": "Neptune",
+            "planet_type": "Ice Giant",
+            "home_star": "Sun",
+            "mass": 17,
+            "radius": 24622,
+            "distance": 4.5,
+            "image": "https://media.tenor.com/kP_nx_RIySoAAAAj/neptune-rotate.gif",
+            "description": "Neptune is the farthest planet from the Sun and an ice giant. It has a deep blue coloration caused by methane in its atmosphere and active weather systems, including the fastest winds in the solar system."
+        }
+        earth = {
+            "planet_name": "Earth",
+            "planet_type": "Terrestrial",
+            "home_star": "Sun",
+            "mass": 5.97,
+            "radius": 6371,
+            "distance": 1,
+            "image": "https://media.tenor.com/4A4UHbVtBIIAAAAM/globe-world.gif",
+            "description": "Earth is the third planet from the Sun and the only known planet to support life. It has a diverse range of environments, including oceans, continents, and an atmosphere that sustains life."
+        }
+        mercury = {
+            "planet_name": "Mercury",
+            "planet_type": "Terrestrial",
+            "home_star": "Sun",
+            "mass": 0.055,
+            "radius": 2439.7,
+            "distance": 0.39,
+            "image": "https://media.tenor.com/jAde5L1hyYIAAAAM/merury.gif",
+            "description": "Mercury is the smallest and innermost planet in our solar system. It has a heavily cratered surface and extreme temperature variations."
+        }
+        venus = {
+            "planet_name": "Venus",
+            "planet_type": "Terrestrial",
+            "home_star": "Sun",
+            "mass": 0.815,
+            "radius": 6051.8,
+            "distance": 0.72,
+            "image": "https://media.tenor.com/oFpT0HHJ0R4AAAAM/venus.gif",
+            "description": "Venus is often called Earth's 'sister planet' due to their similar size and composition. It has a thick atmosphere of carbon dioxide, leading to a runaway greenhouse effect and making it the hottest planet in the solar system."
+        }
+        saturn = {
+            "planet_name": "Saturn",
+            "planet_type": "Gas Giant",
+            "home_star": "Sun",
+            "mass": 95.2,
+            "radius": 58232,
+            "distance": 9.58,
+            "image": "https://media.tenor.com/X41MtjA-OJUAAAAM/mercury-space.gif",
+            "description": "Saturn is famous for its spectacular ring system made of ice and dust particles. It is the second-largest planet and has many moons, including Titan, which has a dense atmosphere."
+        }
+        jupiter = {
+            "planet_name": "Jupiter",
+            "planet_type": "Gas Giant",
+            "home_star": "Sun",
+            "mass": 317.8,
+            "radius": 69911,
+            "distance": 5.2,
+            "image": "https://media.tenor.com/Z4p3O5wUNvAAAAAM/jupiter-planet.gif",
+            "description": "Jupiter is the largest planet in the solar system and a gas giant. It has a banded appearance due to its turbulent atmosphere and a prominent storm known as the Great Red Spot."
+        }
+        mars = {
+            "planet_name": "Mars",
+            "planet_type": "Terrestrial",
+            "home_star": "Sun",
+            "mass": 0.107,
+            "radius": 3389.5,
+            "distance": 1.52,
+            "image": "https://media.tenor.com/SqJHatCJ40cAAAAj/mars.gif",
+            "description": "Mars is known as the 'Red Planet' due to its rusty-colored surface. It has polar ice caps, canyons, and extinct volcanoes. Evidence suggests it once had liquid water on its surface."
+        }
+        uranus = {
+            "planet_name": "Uranus",
+            "planet_type": "Ice Giant",
+            "home_star": "Sun",
+            "mass": 14.536,
+            "radius": 25362.0,
+            "distance": 19.2184,
+            "image": "https://media.tenor.com/Cc8vOIn32VgAAAAM/uranus-planet.gif",
+            "description": "Uranus is an ice giant with a pale blue-green coloration due to methane in its atmosphere. It rotates on its side relative to its orbit and has a system of faint rings."
+        }
+
+        session = Session()
+
+        session.add(Planet(**neptune))
+        session.add(Planet(**earth))
+        session.add(Planet(**mars))
+        session.add(Planet(**venus))
+        session.add(Planet(**jupiter))
+        session.add(Planet(**saturn))
+        session.add(Planet(**mercury))
+        session.add(Planet(**uranus))
+
+        session.commit()
+
+        return {"message": "Planets were successfully created"}
+
+api.add_resource(CreatePlanets, '/create_planets')
 api.add_resource(HomeResource, '/')
 api.add_resource(PlanetsResource, '/planets')
 api.add_resource(PlanetResource, '/planet/<int:id>')
