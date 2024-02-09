@@ -1,6 +1,6 @@
 # Python Flask Planets API
 
-![API_BackEnd](https://github.com/estudart/Python-Flask_Studies/blob/main/API_BackEnd.PNG)
+![API_BackEnd](https://github.com/estudart/planets-api/blob/main/API_BackEnd.PNG)
 
 ## Description
 This repository contains a Flask project for building a RESTful API to manage information about planets and users. It includes endpoints for retrieving, creating, updating, and deleting data.
@@ -13,7 +13,7 @@ This repository contains a Flask project for building a RESTful API to manage in
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/estudart/Python-Flask_Studies.git
+   git clone https://github.com/estudart/planets-api.git
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -30,7 +30,7 @@ This repository contains a Flask project for building a RESTful API to manage in
 
 [API Documentation](https://estudart.pythonanywhere.com/apidocs/)
 
-![API_BackEnd](https://github.com/estudart/Python-Flask_Studies/blob/main/Doc.PNG)
+![API_BackEnd](https://github.com/estudart/planets-api/blob/main/Doc.PNG)
 
 - `/planets`:
   - `GET`: Retrieve a list of planets.
